@@ -6,7 +6,7 @@ const cors          = require("cors");
 const app           = express();
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: "http://localhost:3000"
 };
 
 app.use(cors(corsOptions));
@@ -30,11 +30,12 @@ app.get("/", (req, res) => {
     res.json({ message: "Welcome to My Website." });
 });
 
-//Routes
+//DAFTARIN ROUTES
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
+require('./app/routes/order.routes')(app);
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     const newLocal = 'Server is running on port ${PORT}.';
     console.log(newLocal);
@@ -44,23 +45,23 @@ app.listen(PORT, () => {
 function initial() {
     Role.create({
         id: 1,
-        name_role: "user"
+        name: "user"
     });
 
     Role.create({
         id: 2,
-        name_role: "admin"
+        name: "admin"
     });
 
     Product.create({
-        id: 1,
+        product_id: 1,
         product_name: "Kaos Polos",
         price: "50000",
         qty: 5
     });
 
     Product.create({
-        id: 2,
+        product_id: 2,
         product_name: "Celana Jeans",
         price: "100000",
         qty: 5

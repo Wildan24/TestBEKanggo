@@ -10,6 +10,7 @@ module.exports = function(app) {
     next();
   });
 
+  //for public resource
   app.get("/api/test/all", controller.allAccess);
 
   app.get(

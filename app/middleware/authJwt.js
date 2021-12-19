@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config");
+const config = require("../config/auth.config.js");
 const db = require("../models");
 const User = db.user;
 
@@ -23,8 +23,26 @@ verifyToken = (req, res, next) => {
     });
 };
 
+isUser = (req, res, next) => {
+    User.findByPk(req.userId).then(user => {
+        user.getRoles().then(roles => {
+            for (let i = 0; i < roles.length; i++) {
+                if(roles[i].name === "user"){
+                    next();
+                    return;
+                }
+            }
+
+            res.status(403).send({
+                message: "Require User role!"
+            });
+            return;
+        });
+    });
+};
+
 isAdmin = (req, res, next) => {
-    User.findByPK(req.userId).then(user => {
+    User.findByPk(req.userId).then(user => {
         user.getRoles().then(roles => {
             for (let i = 0; i < roles.length; i++) {
                 if(roles[i].name === "admin"){

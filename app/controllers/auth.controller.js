@@ -1,5 +1,5 @@
 const db = require("../models");
-const config = require("../config/auth.config");
+const config = require("../config/auth.config.js");
 const User = db.user;
 const Role = db.role;
 
@@ -11,6 +11,7 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   // Save User
   User.create({
+    name: req.body.name,
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
@@ -41,12 +42,11 @@ exports.signup = (req, res) => {
 };
 
 exports.signin = (req, res) => {
-  User.findOne({
-    where: {
-      username: req.body.username
-    }
-  })
-    .then(user => {
+    User.findOne({
+        where: {
+            username: req.body.username
+        }
+    }).then(user => {
       if (!user) {
         return res.status(404).send({ message: "User Tidak ada." });
       }
@@ -74,6 +74,7 @@ exports.signin = (req, res) => {
         }
         res.status(200).send({
           id: user.id,
+          name: user.name,
           username: user.username,
           email: user.email,
           roles: authorities,

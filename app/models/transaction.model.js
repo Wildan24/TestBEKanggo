@@ -1,7 +1,9 @@
 module.exports  = (sequelize, Sequelize) => {
     const Transaction = sequelize.define("transaction", {
         order_id: {
-            type: Sequelize.BIGINT,
+            allowNull: false,
+            autoIncrement: true,
+            type: Sequelize.INTEGER,
             primaryKey: true
         },
         user_id: {
@@ -14,8 +16,8 @@ module.exports  = (sequelize, Sequelize) => {
             type: Sequelize.DECIMAL
         },
         status: {
-            type: Sequelize.ENUM,
-            values: ['PENDING']
+            type: Sequelize.DataTypes.ENUM('PENDING', 'PAID'),
+            defaultValue: 'PENDING',
         }
     });
 
